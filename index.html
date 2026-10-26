@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Campus Voice — My Campus, My Voice</title>
+<link rel="stylesheet" href="style.css">
+<script src="script.js" defer></script>
+</head>
+<body>
+<div class="page-background">
+<header class="site-header">
+  <div class="brand"><h1>Campus Voice</h1><p>One campus. One voice.</p></div>
+  <div class="header-right"><span id="sessionLabel">Welcome</span><button id="logoutBtn" class="btn light" hidden>Log out</button></div>
+</header>
+<main>
+<section id="loginView" class="login-layout">
+  <div class="intro"><p class="eyebrow">OUR CAMPUS, OUR COMMUNITY</p><h2>My Campus, My Voice.</h2><p>Find academic updates, campus events and placement announcements in one place.</p><div class="pills"><span>Academic</span><span>Events</span><span>Placement</span></div></div>
+  <section class="panel login-card">
+    <h2>Sign in to Campus Voice</h2><p class="muted">Choose your account type to continue.</p>
+    <form id="loginForm">
+      <label for="loginRole">signing in as</label>
+      <select id="loginRole"><option>Select</option><option>Student</option><option>Staff</option><option>HOD</option><option>Principal</option><option>Admin</option></select>
+      <div id="personFields">
+        <label for="personName">Full name</label><input id="personName" placeholder="Enter your name" required>
+        <div id="studentIdField"><label for="personId">Student USN</label><input id="personId" placeholder="e.g. 4GH22CS001"></div>
+        <div id="staffIdField" hidden><label for="staffId">Staff ID</label><input id="staffId" placeholder="Enter staff ID"></div>
+      </div>
+      <div id="adminFields" hidden>
+        <label for="adminUsername">Admin username</label><input id="adminUsername" autocomplete="username">
+        <label for="adminPassword">Admin password</label><input id="adminPassword" type="password" autocomplete="current-password">
+        <p class="demo-note">Demo admin: <b>admin</b> / <b>Admin@123</b></p>
+      </div>
+      <button class="btn primary full" type="submit">Sign in</button><p id="loginError" class="error" role="alert" hidden></p>
+    </form>
+    <p class="small-note">Demo only: accounts are not verified by a college server. Read README.txt before using.</p>
+  </section>
+</section>
+
+<section id="appView" hidden>
+  <section class="college-heading"><h2>Government Engineering College Hassan</h2><p>Welcome to Our Campus</p></section>
+  <section class="panel welcome"><div><p class="eyebrow">CAMPUS NOTICE BOARD</p><h2 id="dashboardTitle">Latest Announcements</h2><p id="dashboardSubtitle" class="muted">Stay updated with campus news.</p></div><span id="roleBadge" class="role-badge">Student</span></section>
+
+  <!-- TOP DASHBOARD: LATEST RELEASES + CAMPUS CALENDAR -->
+  <section class="top-dashboard">
+    <section id="latestPanel" class="panel latest-panel">
+      <div class="top-panel-heading"><div><p class="eyebrow">JUST PUBLISHED</p><h2>Newly Released Announcements</h2></div><span class="live-dot">Latest</span></div>
+      <p class="muted">The newest announcements posted by the campus admin appear here.</p>
+      <div id="latestAnnouncements" class="latest-list"></div>
+    </section>
+    <section id="calendarPanel" class="panel calendar-panel">
+      <div class="calendar-heading"><button id="prevMonthBtn" class="calendar-nav" aria-label="Previous month">‹</button><div><p class="eyebrow">IMPORTANT DATES</p><h2 id="calendarMonthLabel">Calendar</h2></div><button id="nextMonthBtn" class="calendar-nav" aria-label="Next month">›</button></div>
+      <div class="calendar-weekdays"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+      <div id="calendarDays" class="calendar-days"></div>
+      <div class="calendar-legend"><span class="event-dot"></span> Dates with announcements or events</div>
+      <div id="calendarSelectedInfo" class="calendar-selected-info">Select a marked date to see its announcements.</div>
+    </section>
+  </section>
+
+  <div class="main-layout">
+    <aside class="sidebar">
+      <section class="panel dashboard-nav">
+        <p class="eyebrow">DASHBOARD</p><h2>Menu</h2>
+        <button class="nav-item active" data-view="home">⌂ <span>Home</span></button>
+        <button class="nav-item" data-view="events">🎉 <span>Events</span></button>
+        <button class="nav-item" data-view="calendar">▦ <span>Calendar</span></button>
+        <button class="nav-item" data-view="announcements">📢 <span>Announcements</span></button>
+        <button class="nav-item" data-view="pinned">📌 <span>Important / Pinned</span></button>
+        <button id="sidebarNewAnnouncementBtn" class="nav-item admin-nav" hidden>＋ <span>New Announcement</span></button>
+      </section>
+      <section class="panel"><h2>Filter Announcements</h2><label for="sidebarCategory">Select category</label><select id="sidebarCategory"><option>All</option><option>Academic</option><option>Events</option><option>Placement</option><option>General</option></select><p class="help-text">Choose a category to see relevant announcements.</p></section>
+      <section class="panel"><h2>Quick Actions</h2><button id="quickSearchBtn" class="action-btn">🔍 Search announcements</button><button id="showAllBtn" class="action-btn">▦ View all announcements</button></section>
+      <section class="panel"><h2>Browse Categories</h2><button class="sidebar-category" data-category="Academic">📚 Academic</button><button class="sidebar-category" data-category="Events">🎉 Events</button><button class="sidebar-category" data-category="Placement">💼 Placement</button><button class="sidebar-category" data-category="General">📢 General</button></section>
+      <section id="adminTools" class="panel admin-tools" hidden><h2>Admin Panel</h2><p class="muted">Create, edit, delete and export announcements.</p><button id="openAnnouncementFormBtn" class="btn primary full">＋ Add announcement</button><button id="exportBtn" class="action-btn">⬇ Export announcements (JSON)</button></section>
+    </aside>
+    <section class="content">
+      <section id="announcementFormPanel" class="panel" hidden>
+        <div class="form-heading"><h2 id="formTitle">Create announcement</h2><button id="closeFormBtn" class="btn light" type="button">Close</button></div>
+        <form id="announcementForm">
+          <input id="editAnnouncementId" type="hidden">
+          <label for="announcementTitle">Announcement title</label><input id="announcementTitle" maxlength="120" required placeholder="Enter a clear title">
+          <label for="announcementCategory">Category</label><select id="announcementCategory"><option>Academic</option><option>Events</option><option>Placement</option><option>General</option></select>
+          <label for="announcementDescription">Description</label><textarea id="announcementDescription" rows="4" maxlength="1500" required placeholder="Enter announcement details"></textarea>
+          <div class="form-row"><div><label for="announcementDate">Date</label><input id="announcementDate" type="date" required></div><div><label for="announcementTime">Time (optional)</label><input id="announcementTime" type="time"></div></div>
+          <label for="announcementAudience">Visible to</label><select id="announcementAudience"><option>Everyone</option><option>Students</option><option>Staff</option><option>Leadership</option></select>
+          <div class="form-actions"><button class="btn primary" type="submit">Publish announcement</button><button id="cancelFormBtn" class="btn light" type="button">Cancel</button></div>
+        </form>
+      </section>
+      <section class="panel" id="searchSection"><h2>Search Announcements</h2><input type="search" id="searchInput" placeholder="Search by title, category or keyword..." aria-label="Search announcements"></section>
+      <section class="panel category-buttons" id="categories"><button class="filter-btn active" data-category="All">All</button><button class="filter-btn" data-category="Academic">Academic</button><button class="filter-btn" data-category="Events">Events</button><button class="filter-btn" data-category="Placement">Placement</button><button class="filter-btn" data-category="General">General</button></section>
+      <div class="section-heading" id="announcements"><h2>Latest Announcements</h2><span id="resultCount">0 announcements</span></div>
+      <div class="announcement-grid" id="announcementContainer"></div>
+      <section id="noResults" class="panel no-results" hidden><h3>No announcements found</h3><p>Try another keyword or category.</p><button id="resetBtn" class="btn primary">Reset search and filters</button></section>
+    </section>
+  </div>
+</section>
+</main>
+<footer class="site-footer"><h3>Campus Voice</h3><p>One campus. One voice.</p><p>© 2026 Campus Voice — My Campus, My Voice</p></footer>
+</div>
+</body>
+</html>
